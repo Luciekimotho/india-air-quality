@@ -1,0 +1,17 @@
+@font-face {
+  font-family: "SourceSansPro-Regular";
+  src: url("./fonts/SourceSansPro-Regular.ttf") format("truetype");
+  font-display: swap;
+}
+
+body {
+  margin: 0;
+  font-family: "SourceSansPro-Regular";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}

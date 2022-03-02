@@ -4,14 +4,12 @@ import {
   Toolbar,
   Button,
   makeStyles,
-  TextField,
   Container,
   Grid,
   Divider,
 } from "@material-ui/core";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Autocomplete } from "@material-ui/lab";
 import CigaretteIcon from "./assets/ciggrette_icon.png";
 
 const useStyles = makeStyles((theme) => ({
@@ -31,15 +29,20 @@ const useStyles = makeStyles((theme) => ({
   bold: {
     fontWeight: "bold",
   },
+  articleInfo: {
+    padding: "0px 8px",
+  },
+  articleInfoLink: {
+    padding: "0px 8px",
+    textDecoration: "none",
+    color: theme.palette.primary.main,
+  },
   ciggContainer: {},
   ciggImage: {
     height: "100px",
   },
   subtitle: {
     textAlign: "center",
-  },
-  btn: {
-    margin: "8px",
   },
   compareTabs: {
     textAlign: "center",
@@ -51,6 +54,10 @@ const useStyles = makeStyles((theme) => ({
   },
   citiesContainer: {
     textAlign: "center",
+  },
+  citiesBtn: {
+    margin: "8px",
+    textTransform: "capitalize",
   },
 }));
 
@@ -95,10 +102,6 @@ const App: React.FC<any> = () => {
     fetchData();
   }, []);
 
-  // const handleCitySelection = (e: any, option: any) => {
-  //   setAqi(option.aqi);
-  //   setCigg(parseInt(option.cigg));
-  // };
   const handleCitySelection = (city: City) => {
     setAqi(city.aqi);
     setCigg(parseInt(city.cigg));
@@ -115,16 +118,25 @@ const App: React.FC<any> = () => {
 
       <Container>
         <h1 className={classes.title}> {data.hero_1_title} </h1>
-
-        <Grid container spacing={3}>
-          <Grid item> {data["article-info_1_byline"]} </Grid>
-          <Grid item> {data["article-info_1_date"]} </Grid>
-          <Grid item>
-            <a href={data["article-info_1_category_url"]} target="_blank">
+        <div>
+          <span className={classes.articleInfo}>
+            {data["article-info_1_byline"]}{" "}
+          </span>
+          <span>|</span>
+          <span className={classes.articleInfo}>
+            {data["article-info_1_date"]}
+          </span>
+          <span>|</span>
+          <span>
+            <a
+              href={data["article-info_1_category_url"]}
+              target="_blank"
+              className={classes.articleInfoLink}
+            >
               {data["article-info_1_category"]}
             </a>
-          </Grid>
-        </Grid>
+          </span>
+        </div>
 
         <img className={classes.heroImage} src={data["hero_1_image"]} alt="" />
 
@@ -138,19 +150,16 @@ const App: React.FC<any> = () => {
 
         <Grid container spacing={2} className={classes.compareTabs}>
           <Grid item xs={12}>
-            <h2 className={classes.subtitle}>
-              {" "}
-              {data["compare-tabs_1_title"]}{" "}
-            </h2>
+            <h2 className={classes.subtitle}>{data["compare-tabs_1_title"]}</h2>
           </Grid>
           <Grid item xs={8} className={classes.citiesContainer}>
             {cities.map((city: City) => (
               <Button
                 id={city.name}
-                color={city == activeCity ? "secondary" : "primary"}
-                variant={city == activeCity ? "contained" : "outlined"}
+                color={city === activeCity ? "secondary" : "primary"}
+                variant={city === activeCity ? "contained" : "outlined"}
                 onClick={() => handleCitySelection(city)}
-                className={classes.btn}
+                className={classes.citiesBtn}
               >
                 {city.name}
               </Button>
