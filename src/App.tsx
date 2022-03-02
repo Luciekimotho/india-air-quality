@@ -7,6 +7,7 @@ import {
   TextField,
   Container,
   Grid,
+  Divider,
 } from "@material-ui/core";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -30,8 +31,26 @@ const useStyles = makeStyles((theme) => ({
   bold: {
     fontWeight: "bold",
   },
+  ciggContainer: {},
   ciggImage: {
     height: "100px",
+  },
+  subtitle: {
+    textAlign: "center",
+  },
+  btn: {
+    margin: "8px",
+  },
+  compareTabs: {
+    textAlign: "center",
+    padding: "16px",
+  },
+  selectedContainer: {
+    display: "grid",
+    justifyContent: "center",
+  },
+  citiesContainer: {
+    textAlign: "center",
   },
 }));
 
@@ -48,6 +67,7 @@ const App: React.FC<any> = () => {
   const [cities, setCities] = useState<City[]>([]);
   const [aqi, setAqi] = useState<string>("");
   const [cigg, setCigg] = useState<number>(0);
+  const [activeCity, setActiveCity] = useState<any>();
 
   const fetchData = async () => {
     const res = await axios.get("english.json");
@@ -75,9 +95,14 @@ const App: React.FC<any> = () => {
     fetchData();
   }, []);
 
-  const handleCitySelection = (e: any, option: any) => {
-    setAqi(option.aqi);
-    setCigg(parseInt(option.cigg));
+  // const handleCitySelection = (e: any, option: any) => {
+  //   setAqi(option.aqi);
+  //   setCigg(parseInt(option.cigg));
+  // };
+  const handleCitySelection = (city: City) => {
+    setAqi(city.aqi);
+    setCigg(parseInt(city.cigg));
+    setActiveCity(city);
   };
 
   return (
@@ -109,39 +134,51 @@ const App: React.FC<any> = () => {
         <p> {data["p_4_value"]} </p>
         <p> {data["p_5_value"]} </p>
 
-        <p> {data["compare-tabs_1_title"]} </p>
+        <Divider />
 
-        <Grid container spacing={2}>
-          <Grid item xs={6}>
-            <Autocomplete
-              id="combo-box-demo"
-              options={cities}
-              getOptionLabel={(option: any) => option.name}
-              style={{ width: 300 }}
-              onChange={(e, value) => handleCitySelection(e, value)}
-              renderInput={(params: any) => (
-                <TextField
-                  {...params}
-                  label="Select a city"
-                  variant="outlined"
-                />
-              )}
-            />
+        <Grid container spacing={2} className={classes.compareTabs}>
+          <Grid item xs={12}>
+            <h2 className={classes.subtitle}>
+              {" "}
+              {data["compare-tabs_1_title"]}{" "}
+            </h2>
           </Grid>
-          <Grid item xs={6}>
-            <p> {aqi} </p>
-            {cigg > 0 &&
-              [...Array(cigg)].map((value: undefined, index: number) => (
-                <img
-                  src={CigaretteIcon}
-                  alt="cigarette"
-                  className={classes.ciggImage}
-                />
-              ))}
+          <Grid item xs={8} className={classes.citiesContainer}>
+            {cities.map((city: City) => (
+              <Button
+                id={city.name}
+                color={city == activeCity ? "secondary" : "primary"}
+                variant={city == activeCity ? "contained" : "outlined"}
+                onClick={() => handleCitySelection(city)}
+                className={classes.btn}
+              >
+                {city.name}
+              </Button>
+            ))}
+          </Grid>
+          <Grid item xs={4}>
+            <div className={classes.selectedContainer}>
+              <h3> {activeCity && activeCity.name} </h3>
+              <p> {activeCity && ` ${cigg} cigarettes | ${aqi}`} </p>
+              <div className={classes.ciggContainer}>
+                {cigg > 0 &&
+                  [...Array(cigg)].map((value: undefined, index: number) => (
+                    <img
+                      src={CigaretteIcon}
+                      alt="cigarette"
+                      className={classes.ciggImage}
+                    />
+                  ))}
+              </div>
+            </div>
+          </Grid>
+          <Grid item xs={12}>
+            {data["compare-tabs_1_method"]}
           </Grid>
         </Grid>
 
-        <p> {data["compare-tabs_1_method"]} </p>
+        <Divider />
+
         <p className={classes.bold}> {data["p_6_value"]} </p>
         <p> {data["p_7_value"]} </p>
         <p> {data["p_8_value"]} </p>
