@@ -7,10 +7,14 @@ import {
   Container,
   Grid,
   Divider,
+  TextField,
 } from "@material-ui/core";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import CigaretteIcon from "./assets/ciggrette_icon.png";
+import { Autocomplete } from "@material-ui/lab";
+import hindiData from "./data/hindi.json";
+import englishData from "./data/english.json";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -69,17 +73,22 @@ type City = {
 
 const App: React.FC<any> = () => {
   const classes = useStyles();
-  const datatype: { [key: string]: string } = {};
-  const [data, setData] = useState(datatype);
+
+  const [data, setData] = useState<any>(englishData);
   const [cities, setCities] = useState<City[]>([]);
   const [aqi, setAqi] = useState<string>("");
   const [cigg, setCigg] = useState<number>(0);
   const [activeCity, setActiveCity] = useState<any>();
+  const [activeLanguage, setActiveLanguage] = useState<string>("English");
 
-  const fetchData = async () => {
-    const res = await axios.get("english.json");
-    setData(res.data);
-    const citiesCount = res.data.total_cities_1_value;
+  const languages = ["English", "Hindi"];
+
+  const handleSelection = (e: any, option: any) => {
+    setActiveLanguage(option);
+  };
+
+  const parseCities = (data: any) => {
+    const citiesCount = data.total_cities_1_value;
 
     let cities: City[] = [];
 
@@ -89,9 +98,9 @@ const App: React.FC<any> = () => {
       let ciggString = `compare-tabs_1_city_${i}_cigg`;
 
       cities.push({
-        name: res.data[nameString],
-        aqi: res.data[aqiString],
-        cigg: res.data[ciggString],
+        name: data[nameString],
+        aqi: data[aqiString],
+        cigg: data[ciggString],
       });
     }
 
@@ -99,8 +108,14 @@ const App: React.FC<any> = () => {
   };
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    if (activeLanguage === "Hindi") {
+      setData(hindiData);
+      parseCities(hindiData);
+    } else {
+      setData(englishData);
+      parseCities(englishData);
+    }
+  }, [activeLanguage]);
 
   const handleCitySelection = (city: City) => {
     setAqi(city.aqi);
@@ -112,7 +127,19 @@ const App: React.FC<any> = () => {
     <div className={classes.root}>
       <AppBar position="static" color="transparent">
         <Toolbar>
-          <Button color="inherit">English / Hindi</Button>
+          <Autocomplete
+            id="languages"
+            options={languages}
+            value={activeLanguage}
+            onChange={(event: any, newValue: any) => {
+              handleSelection(event, newValue);
+            }}
+            getOptionLabel={(option) => option}
+            style={{ width: 300 }}
+            renderInput={(params) => (
+              <TextField {...params} variant="outlined" />
+            )}
+          />
         </Toolbar>
       </AppBar>
 

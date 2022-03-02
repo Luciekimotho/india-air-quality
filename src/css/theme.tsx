@@ -11,7 +11,7 @@ const theme = createTheme({
   },
   typography: {
     body1: {
-      fontFamily: "Sarabun Regular",
+      fontFamily: "SourceSansPro-Regular",
     },
   },
 });
