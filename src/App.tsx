@@ -21,6 +21,29 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
 
+  toolBar: {
+    justifyContent: "end",
+  },
+
+  textfield: {
+    "& .MuiInputBase-input.MuiAutocomplete-input": {
+      color: "white",
+    },
+    "& .MuiAutocomplete-popupIndicator": {
+      color: "white",
+    },
+    "& .MuiInput-underline:before": {
+      border: "0px",
+      transition: "border-bottom-color 200ms cubic-bezier(0, 0, 0, 0) 0ms",
+    },
+    "& .MuiInput-underline:after  ": {
+      border: "0px",
+    },
+    "& .MuiInput-underline:hover:not(.Mui-disabled):before": {
+      border: "0px",
+    },
+  },
+
   container: {
     padding: "16px",
   },
@@ -125,19 +148,24 @@ const App: React.FC<any> = () => {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static" color="transparent">
-        <Toolbar>
+      <AppBar position="static" color="primary">
+        <Toolbar className={classes.toolBar}>
           <Autocomplete
             id="languages"
             options={languages}
             value={activeLanguage}
+            disableClearable
             onChange={(event: any, newValue: any) => {
               handleSelection(event, newValue);
             }}
             getOptionLabel={(option) => option}
-            style={{ width: 300 }}
+            style={{ width: 100 }}
             renderInput={(params) => (
-              <TextField {...params} variant="outlined" />
+              <TextField
+                {...params}
+                variant="standard"
+                className={classes.textfield}
+              />
             )}
           />
         </Toolbar>
