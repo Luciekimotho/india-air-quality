@@ -1,22 +1,11 @@
 import "./App.css";
-import {
-  Button,
-  makeStyles,
-  Container,
-  Grid,
-  Divider,
-  AccordionSummary,
-  Accordion,
-  Typography,
-  AccordionDetails,
-} from "@material-ui/core";
+import { makeStyles, Container } from "@material-ui/core";
 import { useEffect, useState } from "react";
-
 import hindiData from "./data/hindi.json";
 import englishData from "./data/english.json";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Header from "./components/Header";
 import CitySelector from "./components/CitySelector";
+import MethodologyCard from "./components/MethodologyCard";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -192,8 +181,6 @@ const App: React.FC<any> = () => {
         <p> {data["p_4_value"]} </p>
         <p> {data["p_5_value"]} </p>
 
-        <Divider />
-
         <CitySelector
           activeCity={activeCity}
           cities={cities}
@@ -203,25 +190,7 @@ const App: React.FC<any> = () => {
           handleCitySelection={handleCitySelection}
         />
 
-        <Divider />
-
-        <Accordion className={classes.methodologyAccordion}>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel-content"
-            id="panel-header"
-          >
-            <Typography className={classes.methodologyTitle}>
-              {data["p_6_value"]}{" "}
-            </Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <p> {data["p_7_value"]} </p>
-            <p> {data["p_8_value"]} </p>
-            <p> {data["p_9_value"]} </p>
-            <p> {data["p_10_value"]} </p>
-          </AccordionDetails>
-        </Accordion>
+        <MethodologyCard data={data} />
       </Container>
     </div>
   );
