@@ -1,13 +1,10 @@
 import "./App.css";
 import {
-  AppBar,
-  Toolbar,
   Button,
   makeStyles,
   Container,
   Grid,
   Divider,
-  TextField,
   AccordionSummary,
   Accordion,
   Typography,
@@ -15,10 +12,10 @@ import {
 } from "@material-ui/core";
 import { useEffect, useState } from "react";
 import CigaretteIcon from "./assets/ciggrette_icon.png";
-import { Autocomplete } from "@material-ui/lab";
 import hindiData from "./data/hindi.json";
 import englishData from "./data/english.json";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import Header from "./components/Header";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -117,8 +114,6 @@ const App: React.FC<any> = () => {
   const [activeCity, setActiveCity] = useState<any>();
   const [activeLanguage, setActiveLanguage] = useState<string>("English");
 
-  const languages = ["English", "Hindi"];
-
   const handleSelection = (e: any, option: any) => {
     setActiveLanguage(option);
   };
@@ -161,28 +156,10 @@ const App: React.FC<any> = () => {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static" color="primary">
-        <Toolbar className={classes.toolBar}>
-          <Autocomplete
-            id="languages"
-            options={languages}
-            value={activeLanguage}
-            disableClearable
-            onChange={(event: any, newValue: any) => {
-              handleSelection(event, newValue);
-            }}
-            getOptionLabel={(option) => option}
-            style={{ width: 100 }}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                variant="standard"
-                className={classes.textfield}
-              />
-            )}
-          />
-        </Toolbar>
-      </AppBar>
+      <Header
+        language={activeLanguage}
+        handleLanguageSelection={handleSelection}
+      />
 
       <Container>
         <h1 className={classes.title}> {data.hero_1_title} </h1>
