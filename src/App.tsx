@@ -8,17 +8,22 @@ import {
   Grid,
   Divider,
   TextField,
+  AccordionSummary,
+  Accordion,
+  Typography,
+  AccordionDetails,
 } from "@material-ui/core";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import CigaretteIcon from "./assets/ciggrette_icon.png";
 import { Autocomplete } from "@material-ui/lab";
 import hindiData from "./data/hindi.json";
 import englishData from "./data/english.json";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+    marginBottom: "32px",
   },
 
   toolBar: {
@@ -85,6 +90,14 @@ const useStyles = makeStyles((theme) => ({
   citiesBtn: {
     margin: "8px",
     textTransform: "capitalize",
+  },
+  methodologyTitle: {
+    fontWeight: "bold",
+  },
+  methodologyAccordion: {
+    "& .MuiAccordionDetails-root": {
+      display: "block",
+    },
   },
 }));
 
@@ -204,10 +217,12 @@ const App: React.FC<any> = () => {
         <Divider />
 
         <Grid container spacing={2} className={classes.compareTabs}>
-          <Grid item xs={12}>
-            <h2 className={classes.subtitle}>{data["compare-tabs_1_title"]}</h2>
-          </Grid>
           <Grid item xs={8} className={classes.citiesContainer}>
+            <Grid item xs={12}>
+              <h2 className={classes.subtitle}>
+                {data["compare-tabs_1_title"]}
+              </h2>
+            </Grid>
             {cities.map((city: City) => (
               <Button
                 id={city.name}
@@ -243,11 +258,23 @@ const App: React.FC<any> = () => {
 
         <Divider />
 
-        <p className={classes.bold}> {data["p_6_value"]} </p>
-        <p> {data["p_7_value"]} </p>
-        <p> {data["p_8_value"]} </p>
-        <p> {data["p_9_value"]} </p>
-        <p> {data["p_10_value"]} </p>
+        <Accordion className={classes.methodologyAccordion}>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel-content"
+            id="panel-header"
+          >
+            <Typography className={classes.methodologyTitle}>
+              {data["p_6_value"]}{" "}
+            </Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <p> {data["p_7_value"]} </p>
+            <p> {data["p_8_value"]} </p>
+            <p> {data["p_9_value"]} </p>
+            <p> {data["p_10_value"]} </p>
+          </AccordionDetails>
+        </Accordion>
       </Container>
     </div>
   );
