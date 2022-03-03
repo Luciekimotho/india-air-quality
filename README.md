@@ -2,6 +2,28 @@
 
 ## Instructions
 
+I have provided below scripts to install and run the app, run the tests and build the app for production.
+In addition all the production files are in the /build folder and are ready for making live.
+
+### Running the code
+
+#### `npm install`
+
+#### `npm start`
+
+This installs the needed node modules and runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+
+### Running the tests
+
+#### `npm test`
+
+### Building the app for production
+
+#### `npm run build`
+
+## Assessment Instructions
+
 You have been given some data by the editorial department in the ./src/data directory.
 
 They need you to build an interactive project where users will select an Indian city and have their local air quality displayed in cigarettes and particulate matter.
@@ -32,18 +54,3 @@ Explore translation for the hindi version
 ## Design
 
 ![img-tag](https://user-images.githubusercontent.com/9200043/155313473-6fa027eb-eedd-463d-97ad-92bb5fe3c0e3.png)
-
-### Running the app
-
-#### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-### Running the tests
-
-#### `npm test`
-
-### Building the app for production
-
-#### `npm run build`
